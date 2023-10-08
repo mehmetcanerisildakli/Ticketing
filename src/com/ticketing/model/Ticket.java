@@ -46,4 +46,8 @@ public class Ticket extends Entity {
     public Cost getCost() {
         return cost;
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
 }

@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class Event extends Entity {
     protected String name;
@@ -15,6 +16,7 @@ public abstract class Event extends Entity {
     private Price price;
     private List<Ticket> ticketsAvailable;
     private List<Ticket> ticketsSold;
+    private double totalIncome;
 
     public Event(int id, String name, String description, LocalDateTime date, int totalNumberOfSeats, Duration duration, Location location, Price price) {
 
@@ -66,5 +68,22 @@ public abstract class Event extends Entity {
 //            sum += it.next().getCost().getAmount();
 
         return sum;
+    }
+
+    public List<Ticket> getTicketsSold() {
+        return ticketsSold;
+    }
+
+    public double calculateIncomeFunctional() {
+
+        Iterator<Ticket> it = ticketsSold.iterator();
+
+        Consumer<Ticket> consumer = (t) -> {
+            Cost cost = t.getCost();
+            double amount = cost.getAmount();
+            totalIncome += amount;
+        };
+        it.forEachRemaining(consumer);
+        return totalIncome;
     }
 }
